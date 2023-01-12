@@ -1,6 +1,8 @@
-﻿namespace BlogProject.Repositories;
+﻿using BlogProject.Models.Database.Posts;
 
-public interface IPostsRepository
+namespace BlogProject.Repositories;
+
+public interface IPostsRepository : IBaseRepository<Post>
 {
     
 }

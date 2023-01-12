@@ -2,7 +2,7 @@
 using BlogProject.Repositories.Impl;
 using Microsoft.EntityFrameworkCore;
 
-namespace BlogProject.Repositories;
+namespace BlogProject.Repositories.Impl;
 
 public class BaseRepository<T> : IBaseRepository<T> where T : class
 {
@@ -19,10 +19,10 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
         _currentSet = set;
     }
 
-    public void Create(T item)
+    public async Task Create(T item)
     {
-        _currentSet.Add(item);
-        _context.SaveChanges();
+        await _currentSet.AddAsync(item);
+        await _context.SaveChangesAsync();
     }
 
     public void Delete(T item)
@@ -31,14 +31,14 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
         _context.SaveChanges();
     }
 
-    public T Get(object id)
+    public async Task<T> Get(object id)
     {
-        return _currentSet.Find(id);
+        return await _currentSet.FindAsync(id);
     }
 
-    public IEnumerable<T> GetAll()
+    public async Task<T[]> GetAll()
     {
-        return _currentSet;
+        return await _currentSet.ToArrayAsync();
     }
 
     public void Update(T item)

@@ -1,6 +1,8 @@
-﻿namespace BlogProject.Repositories.Impl;
+﻿using BlogProject.Models.Database.Users;
 
-public interface IUserRepository
+namespace BlogProject.Repositories;
+
+public interface IUserRepository : IBaseRepository<User>
 {
     
 }
