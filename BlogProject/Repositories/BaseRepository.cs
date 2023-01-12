@@ -8,7 +8,7 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
 {
     protected DbContext _context;
 
-    public DbSet<T> Set { get; private set; }
+    public DbSet<T> _currentSet { get; private set; }
 
     public BaseRepository(ApplicationContext context)
     {
@@ -16,34 +16,34 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
         var set =_context.Set<T>();
         set.Load();
 
-        Set = set;
+        _currentSet = set;
     }
 
     public void Create(T item)
     {
-        Set.Add(item);
+        _currentSet.Add(item);
         _context.SaveChanges();
     }
 
     public void Delete(T item)
     {
-        Set.Remove(item);
+        _currentSet.Remove(item);
         _context.SaveChanges();
     }
 
     public T Get(object id)
     {
-        return Set.Find(id);
+        return _currentSet.Find(id);
     }
 
     public IEnumerable<T> GetAll()
     {
-        return Set;
+        return _currentSet;
     }
 
     public void Update(T item)
     {
-        Set.Update(item);
+        _currentSet.Update(item);
         _context.SaveChanges();
     }
 }

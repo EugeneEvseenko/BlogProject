@@ -17,6 +17,6 @@ public class PostsRepository : BaseRepository<Post>, IPostsRepository
 
     public async Task<Post[]> GetUserPosts(string id)
     {
-        return await Set.Where(x => x.User.Id == id).ToArrayAsync();
+        return await _currentSet.Where(x => x.User.Id == id).ToArrayAsync();
     }
 }
