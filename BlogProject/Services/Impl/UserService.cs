@@ -83,4 +83,28 @@ public class UserService : IUserService
             return false;
         }
     }
+
+    public async Task<int> DeleteAllUsers()
+    {
+        try
+        {
+            var users = await GetAllUsers();
+
+            if (users.Length == 0)
+                return 0;
+
+            var deletedUsersCounter = 0;
+            foreach (var user in users)
+            {
+                var result = await _userManager.DeleteAsync(user);
+                if (result.Succeeded)
+                    deletedUsersCounter++;
+            }
+            return deletedUsersCounter;
+        }
+        catch (Exception e)
+        {
+            return 0;
+        }
+    }
 }

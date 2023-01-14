@@ -9,4 +9,5 @@ public interface IUserService
     Task<bool> AddUser(User user);
     Task<bool> UpdateUser(User user);
     Task<bool> DeleteUser(string guid);
+    Task<int> DeleteAllUsers();
 }

@@ -136,9 +136,11 @@ namespace BlogProject.Controllers
         /// </summary>
         /// <param name="user"></param>
         [HttpPut("update")]
-        public async Task Put([FromBody] User user)
+        [ProducesDefaultResponseType(typeof(bool))]
+        public async Task<IActionResult> Put([FromBody] User user)
         {
             var result = await _userService.UpdateUser(user);
+            return result ? Ok() : BadRequest();
         }
 
         /// <summary>
@@ -146,9 +148,22 @@ namespace BlogProject.Controllers
         /// </summary>
         /// <param name="id"></param>
         [HttpDelete("delete")]
-        public async Task Delete([FromQuery] string guid)
+        public async Task<IActionResult> Delete([FromQuery] string guid)
         {
             var result = await _userService.DeleteUser(guid);
+            return result ? Ok() : BadRequest();
+        }
+        
+        /// <summary>
+        /// Удаление всех пользователей
+        /// </summary>
+        /// <param name="id"></param>
+        [HttpDelete("delete-all")]
+        [ProducesDefaultResponseType(typeof(int))]
+        public async Task<IActionResult> DeleteAll()
+        {
+            var result = await _userService.DeleteAllUsers();
+            return Ok(result);
         }
     }
 }
