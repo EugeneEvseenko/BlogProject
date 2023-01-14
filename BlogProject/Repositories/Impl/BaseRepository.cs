@@ -19,7 +19,7 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
         _currentSet = set;
     }
 
-    public async Task Create(T item)
+    public async Task CreateAsync(T item)
     {
         await _currentSet.AddAsync(item);
         await _context.SaveChangesAsync();
@@ -31,12 +31,12 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
         _context.SaveChanges();
     }
 
-    public async Task<T> Get(object id)
+    public async Task<T> GetAsync(object id)
     {
         return await _currentSet.FindAsync(id);
     }
 
-    public async Task<T[]> GetAll()
+    public async Task<T[]> GetAllAsync()
     {
         return await _currentSet.ToArrayAsync();
     }

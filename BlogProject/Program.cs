@@ -1,4 +1,7 @@
+using System.Reflection;
+using AutoMapper;
 using BlogProject.Database;
+using BlogProject.Mapper;
 using BlogProject.Models.Database.Users;
 using BlogProject.Repositories;
 using BlogProject.Repositories.Impl;
@@ -6,8 +9,18 @@ using BlogProject.Services;
 using BlogProject.Services.Impl;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var mapperConfig = new MapperConfiguration((v) =>
+{
+    v.AddProfile(new UserProfile());
+});
+
+IMapper mapper = mapperConfig.CreateMapper();
+
+builder.Services.AddSingleton(mapper);
 
 #region Database
 
@@ -37,7 +50,22 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo()
+    {
+        Title = "Blog API",
+        Description = "Вспомогательная API для работы с сущностями проекта",
+        Version = "v1",
+        Contact = new OpenApiContact(){ Name = "Eugene Evseenko", Email = "jonikevseenko@gmail.com", Url = new Uri("https://www.evseenko.kz/")}
+    });
+    // Set the comments path for the Swagger JSON and UI.
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    // pick comments from classes, including controller summary comments
+    options.IncludeXmlComments(xmlPath, includeControllerXmlComments: true); 
+    options.EnableAnnotations();
+});
 
 var app = builder.Build();
 
@@ -51,7 +79,10 @@ if (!app.Environment.IsDevelopment())
 else
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "Blog API");
+    });
 }
 
 app.UseHttpsRedirection();
