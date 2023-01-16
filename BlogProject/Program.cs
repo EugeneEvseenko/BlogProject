@@ -42,6 +42,7 @@ builder.Services.AddIdentity<User, IdentityRole>(opts => {
 
 #region Services
 
+builder.Services.AddScoped<IRandomService, RandomService>();
 builder.Services.AddScoped<IUserService, UserService>();
 
 #endregion
