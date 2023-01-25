@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using BlogProject.Classes;
+using BlogProject.Models.API.Request;
 using BlogProject.Models.API.Response;
 using BlogProject.Models.Database.Users;
 using BlogProject.Models.ViewModels;
@@ -108,7 +109,7 @@ public class UserController : BaseController
     [HttpPost]
     [Route("add")]
     [ProducesDefaultResponseType(typeof(BaseResponse))]
-    public async Task<IActionResult> Post([FromBody] RegisterViewModel register)
+    public async Task<IActionResult> Post([FromBody] RegisterRequest register)
     {
         if (ModelState.IsValid)
         {

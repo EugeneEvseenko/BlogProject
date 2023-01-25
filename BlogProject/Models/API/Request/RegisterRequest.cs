@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using BlogProject.Models.Database.Users;
 
-namespace BlogProject.Models.ViewModels;
+namespace BlogProject.Models.API.Request;
 
-public class RegisterViewModel
+public class RegisterRequest
 {
     [Required(ErrorMessage = "Поле Имя обязательно для заполнения")]
     [DataType(DataType.Text)]
@@ -36,5 +37,8 @@ public class RegisterViewModel
     [Display(Name = "Подтвердить пароль", Prompt = "Введите пароль повторно")]
     public string PasswordConfirm { get; set; }
 
+    [Required(ErrorMessage = "Необходимо присвоить пользователю роль")]
+    public RoleFeature RoleFeatures { get; set; }
+    
     public string Login => EmailReg;
 }
